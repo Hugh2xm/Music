@@ -10,8 +10,9 @@ module.exports = app => {
     })
 
     //列表数据
+    //populate的意思是我不只是要这个字段的ID，我要的是整个对象里面的信息
     router.get('/categories',async (req,res) => {
-        const items = await Category.find().limit()
+        const items = await Category.find().populate('parent').limit()
         res.send(items)
     })
 
@@ -25,6 +26,14 @@ module.exports = app => {
     router.put('/categories/:id',async (req,res)=> {
         const model = await Category.findByIdAndUpdate(req.params.id, req.body)
         res.send(model)
+    })
+
+    //删除数据
+    router.delete('/categories/:id',async (req,res)=> {
+        await Category.findByIdAndDelete(req.params.id)
+        res.send({
+            success: true
+        })
     })
 
     //子路由
