@@ -79,9 +79,9 @@
             //添加/修改数据
             async save () {
                 if ( this.id ) {
-                    await this.$http.put(`categories/${this.id}`, this.model)
+                    await this.$http.put(`rest/categories/${this.id}`, this.model)
                 } else {
-                    await this.$http.post('categories',this.model)
+                    await this.$http.post('rest/categories',this.model)
                 }
                 this.$router.push('/categories/list')
                 this.$message({
@@ -91,7 +91,7 @@
             },
             //修改时显示的数据
             async fetch() {
-                const res = await this.$http.get(`categories/${this.id}`)
+                const res = await this.$http.get(`rest/categories/${this.id}`)
                 this.model = Object.assign({},this.model,res.data)
             }
         },

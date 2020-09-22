@@ -19,7 +19,7 @@
                                     <span>{{ props.row.name }}</span>
                                 </el-form-item>
                                 <el-form-item label="子分类:">
-                                    <span v-for="item of props.row.child" style="margin: 0 10px">{{item}}</span>
+                                    <span v-for="(item,index) of props.row.child" :key="index" style="margin: 0 10px">{{item}}</span>
                                 </el-form-item>
                             </el-form>
                         </template>
@@ -64,7 +64,7 @@
         methods: {
             //显示
             async fetch () {
-                const res = await this.$http.get('categories')
+                const res = await this.$http.get('rest/categories')
                 this.items = res.data
             },
             //删除
@@ -74,30 +74,13 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(async () => {
-                    await this.$http.delete(`categories/${row._id}`)
+                    await this.$http.delete(`rest/categories/${row._id}`)
                     this.$message({
                         type: 'success',
                         message: '删除成功!'
                     });
                     this.fetch();
                 });
-            },
-            load(tree, treeNode, resolve) {
-                setTimeout(() => {
-                    resolve([
-                        {
-                            id: 31,
-                            date: '2016-05-01',
-                            name: '王小虎',
-                            address: '上海市普陀区金沙江路 1519 弄'
-                        }, {
-                            id: 32,
-                            date: '2016-05-01',
-                            name: '王小虎',
-                            address: '上海市普陀区金沙江路 1519 弄'
-                        }
-                    ])
-                }, 1000)
             }
         },
         created () {
