@@ -1,5 +1,6 @@
 module.exports = app => {
     const express = require('express')
+
     const router = express.Router({
         mergeParams: true
     })
@@ -44,8 +45,17 @@ module.exports = app => {
     //子路由
     app.use('/admin/api/rest/:resource',async (req, res, next) => {
         const modelName = require('inflection').classify(req.params.resource)
-        console.log(modelName)
         req.Model = require(`../../models/${modelName}`)
         next()
     },router)
+
+
+    const multer = require('multer')
+    const upload = multer({dest: __dirname + '/../../uploads/ad'})
+    //上传图片
+    app.post('/admin/api/upload', upload.single('file'),async (req,res)=> {
+        const file = req.file
+        file.url = `http://localhost:3000/uploads/ad/${file.filename}`
+        res.send(file)
+    })
 }

@@ -4,10 +4,15 @@
             <el-menu router :default-openeds="['1']">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-message"></i>内容管理</template>
-                    <el-submenu index="1-4">
+                    <el-submenu index="1-1">
                         <template slot="title">分类</template>
                         <el-menu-item index="/categories/create">新建分类</el-menu-item>
                         <el-menu-item index="/categories/list">分类列表</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="1-2">
+                        <template slot="title">广告位</template>
+                        <el-menu-item index="/ads/create">新建广告位</el-menu-item>
+                        <el-menu-item index="/ads/list">广告位列表</el-menu-item>
                     </el-submenu>
                 </el-submenu>
             </el-menu>
