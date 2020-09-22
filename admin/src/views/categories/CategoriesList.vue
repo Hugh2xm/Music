@@ -8,28 +8,27 @@
             <div class="text item">
                 <el-table
                         :data="items"
-                        style="width: 100%"
-                        row-key="id"
-                        lazy
-                        :load="load"
-                        :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                    <el-table-column
-                            prop="_id"
-                            label="ID"
-                            width="230">
+                        style="width: 100%">
+                    <el-table-column type="expand">
+                        <template slot-scope="props">
+                            <el-form label-position="left" inline class="demo-table-expand">
+                                <el-form-item label="ID:">
+                                    <span>{{ props.row._id }}</span>
+                                </el-form-item>
+                                <el-form-item label="分类名称:">
+                                    <span>{{ props.row.name }}</span>
+                                </el-form-item>
+                                <el-form-item label="子分类:">
+                                    <span v-for="item of props.row.child" style="margin: 0 10px">{{item}}</span>
+                                </el-form-item>
+                            </el-form>
+                        </template>
                     </el-table-column>
-                    <el-table-column
-                            prop="parent.name"
-                            label="上级分类">
+                    <el-table-column label="ID" prop="_id">
                     </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="分类名称">
+                    <el-table-column label="名称" prop="name">
                     </el-table-column>
-                    <el-table-column
-                            fixed="right"
-                            label="操作"
-                            width="200">
+                    <el-table-column label="操作">
                         <template slot-scope="scope">
                             <el-button
                                     type="text"
@@ -47,6 +46,8 @@
                     </el-table-column>
                 </el-table>
             </div>
+
+
         </el-card>
 
     </div>
@@ -108,5 +109,17 @@
 <style scoped>
     .box-card {
         margin: 2rem;
+    }
+    .demo-table-expand {
+        font-size: 0;
+    }
+    .demo-table-expand label {
+        width: 90px;
+        color: #99a9bf;
+    }
+    .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
     }
 </style>
