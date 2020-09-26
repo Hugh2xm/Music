@@ -4,7 +4,11 @@ const mongoose = require('mongoose')
 //建立模型
 const schema = new mongoose.Schema({
     name: { type: String },
-    child: { type: Array }
+    parent: {
+        type: mongoose.SchemaTypes.ObjectId,
+        //关联
+        ref: 'Category'
+    }
 })
 
 //导出

@@ -13,7 +13,8 @@ module.exports = app => {
 
     //列表数据
     //populate的意思是我不只是要这个字段的ID，我要的是整个对象里面的信息
-    router.get('/',async (req,res) => {
+    // find({"parent":{"$exists":false}})
+    router.get('/',async (req,res)=> {
         const queryOptions = {}
         if(req.Model.modelName === 'Category') {
             queryOptions.populate = 'parent'

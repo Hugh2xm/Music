@@ -5,35 +5,35 @@
                 <span>{{id ? '编辑':'新建'}}分类</span>
             </div>
             <div class="text item">
-                <el-form label-width="100px" @submit.native.prevent="save">
-                    <el-form-item  label="分类名称" style="margin: 40px 0 20px 0">
-                        <el-input v-model="model.name" style="width: 65%;" ></el-input>
-                    </el-form-item>
-                    <el-form-item label="子类名称">
-                        <el-tag
-                                :key="tag"
-                                v-for="tag in model.child"
-                                closable
-                                :disable-transitions="false"
-                                @close="handleClose(tag)">
-                            {{tag}}
-                        </el-tag>
-                        <el-input
-                                class="input-new-tag"
-                                v-if="inputVisible"
-                                v-model="inputValue"
-                                ref="saveTagInput"
-                                size="small"
-                                @keyup.enter.native="handleInputConfirm"
-                                @blur="handleInputConfirm"
-                        >
-                        </el-input>
-                        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-
-                    </el-form-item>
-                    <el-form-item style="float: right;margin: 20px 40px 50px 0">
-                        <el-button type="primary" native-type="submit" >保存</el-button>
-                    </el-form-item>
+                <el-form label-width="120px" @submit.native.prevent="save">
+                    <el-row>
+                        <el-col>
+                            <el-form-item label="上级分类">
+                                <el-select v-model="model.parent">
+                                    <el-option
+                                            v-for="item in parents"
+                                            :key="item._id"
+                                            :label="item.name"
+                                            :value="item._id"
+                                    ></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="16">
+                            <el-form-item  label="分类名称">
+                                <el-input v-model="model.name" ></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :offset="14">
+                            <el-form-item >
+                                <el-button type="primary" native-type="submit" >保存</el-button>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                 </el-form>
             </div>
         </el-card>
@@ -48,11 +48,8 @@
         },
         data () {
             return {
-                model: {
-                    child: []
-                },
-                inputVisible: false,
-                inputValue: ''
+                model: {},
+                parents: []
             }
         },
         methods: {
@@ -92,10 +89,16 @@
             //修改时显示的数据
             async fetch() {
                 const res = await this.$http.get(`rest/categories/${this.id}`)
-                this.model = Object.assign({},this.model,res.data)
+                this.model = res.data
+            },
+            //获取父级选项,下拉菜单
+            async fetchParents () {
+                const res = await this.$http.get(`rest/categories`)
+                this.parents = res.data
             }
         },
         created () {
+            this.fetchParents()
             this.id && this.fetch()
         }
     }
@@ -103,9 +106,6 @@
 
 
 <style scoped>
-    .el-input {
-        padding-left: 10px;
-    }
     .el-tag + .el-tag {
         margin-left: 10px;
     }
