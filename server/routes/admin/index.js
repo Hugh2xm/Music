@@ -18,6 +18,8 @@ module.exports = app => {
         const queryOptions = {}
         if(req.Model.modelName === 'Category') {
             queryOptions.populate = 'parent'
+        } else if(req.Model.modelName === 'Song') {
+            queryOptions.populate = 'parent'
         }
         const items = await req.Model.find().setOptions(queryOptions).limit()
         res.send(items)
@@ -34,7 +36,6 @@ module.exports = app => {
         const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
         res.send(model)
     })
-
     //删除数据
     router.delete('/:id',async (req,res)=> {
         await req.Model.findByIdAndDelete(req.params.id)
