@@ -1,7 +1,7 @@
 <template>
     <el-container style="height: 100vh;">
         <el-aside width="300px" style="background-color: rgb(238, 241, 246)">
-            <el-menu router :default-openeds="['1']">
+            <el-menu router @open="handleOpen" @close="handleClose">
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-message"></i>内容管理</template>
                     <el-submenu index="1-1">
@@ -14,10 +14,18 @@
                         <el-menu-item index="/ads/create">新建广告位</el-menu-item>
                         <el-menu-item index="/ads/list">广告位列表</el-menu-item>
                     </el-submenu>
-                    <el-submenu index="1-3">
+                </el-submenu>
+                <el-submenu index="2">
+                    <template slot="title"><i class="el-icon-message"></i>歌曲管理</template>
+                    <el-submenu index="2-1">
                         <template slot="title">歌曲</template>
                         <el-menu-item index="/songs/create">新建歌曲</el-menu-item>
                         <el-menu-item index="/songs/list">歌曲列表</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="2-2">
+                        <template slot="title">合辑</template>
+                        <el-menu-item index="/collections/create">新建合辑</el-menu-item>
+                        <el-menu-item index="/collections/list">合辑列表</el-menu-item>
                     </el-submenu>
                 </el-submenu>
             </el-menu>
@@ -61,6 +69,14 @@
         data() {
             return {
 
+            }
+        },
+        methods: {
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
             }
         }
     };
