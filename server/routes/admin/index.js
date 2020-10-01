@@ -25,6 +25,11 @@ module.exports = app => {
         res.send(items)
     })
 
+    router.get('/name',async (req,res)=> {
+        const items = await req.Model.find().populate('songs').limit()
+        res.send(items)
+    })
+
     //编辑数据
     router.get('/:id',async (req,res) => {
         const model = await req.Model.findById(req.params.id)

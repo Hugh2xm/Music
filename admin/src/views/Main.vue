@@ -27,6 +27,11 @@
                         <el-menu-item index="/collections/create">新建合辑</el-menu-item>
                         <el-menu-item index="/collections/list">合辑列表</el-menu-item>
                     </el-submenu>
+                    <el-submenu index="2-3">
+                        <template slot="title">评论</template>
+                        <el-menu-item index="/comments/create">新建评论</el-menu-item>
+                        <el-menu-item index="/comments/list">评论列表</el-menu-item>
+                    </el-submenu>
                 </el-submenu>
             </el-menu>
         </el-aside>

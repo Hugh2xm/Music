@@ -12,8 +12,11 @@ import AdList from "./views/ad/AdList"
 import SongsEdit from './views/songs/SongsEdit'
 import SongsList from './views/songs/SongsList'
 
-import CollectionsEdit from './views/collections/collectionsEdit'
-import CollectionsList from './views/collections/collectionsList'
+import CollectionsEdit from './views/collections/CollectionsEdit'
+import CollectionsList from './views/collections/CollectionsList'
+
+import CommentsEdit from './views/comments/CommentsEdit'
+import CommentsList from './views/comments/CommentsList'
 
 
 Vue.use(Router)
@@ -42,6 +45,10 @@ export default new Router({
         { path: '/collections/create', component:CollectionsEdit },
         { path: '/collections/edit/:id', component:CollectionsEdit, props: true },
         { path: '/collections/list', component:CollectionsList },
+
+        { path: '/comments/create', component:CommentsEdit },
+        { path: '/comments/edit/:id', component:CommentsEdit, props: true },
+        { path: '/comments/list', component:CommentsList },
       ]
     }
   ]
