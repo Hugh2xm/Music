@@ -18,6 +18,9 @@ import CollectionsList from './views/collections/CollectionsList'
 import CommentsEdit from './views/comments/CommentsEdit'
 import CommentsList from './views/comments/CommentsList'
 
+import AdminUsersEdit from './views/adminusers/AdminUsersCreate'
+import AdminUsersList from './views/adminusers/AdminUsersList'
+import AdminUsersCreate from "./views/adminusers/AdminUsersCreate";
 
 Vue.use(Router)
 
@@ -49,6 +52,10 @@ export default new Router({
         { path: '/comments/create', component:CommentsEdit },
         { path: '/comments/edit/:id', component:CommentsEdit, props: true },
         { path: '/comments/list', component:CommentsList },
+
+        { path: '/admin_users/create', component:AdminUsersCreate },
+        { path: '/admin_users/edit/:id', component:AdminUsersCreate, props: true },
+        { path: '/admin_users/list', component:AdminUsersList },
       ]
     }
   ]

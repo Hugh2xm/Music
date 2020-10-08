@@ -86,7 +86,6 @@
         },
         methods: {
             Upload(res) {
-                console.log(res)
                 this.model.songs.push({
                     name: res.originalname,
                     url: res.url,
@@ -122,7 +121,6 @@
             async fetch() {
                 const res = await this.$http.get(`rest/collections/${this.id}`)
                 this.model = Object.assign({},this.model,res.data)
-                console.log(this.model.songs)
                 this.model.songs.forEach( item => {
                     this.videoUpload.push({
                         progress: false,

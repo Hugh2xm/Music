@@ -14,6 +14,11 @@
                         <el-menu-item index="/ads/create">新建广告位</el-menu-item>
                         <el-menu-item index="/ads/list">广告位列表</el-menu-item>
                     </el-submenu>
+                    <el-submenu index="1-3">
+                        <template slot="title">管理员</template>
+                        <el-menu-item index="/admin_users/create">新建管理员</el-menu-item>
+                        <el-menu-item index="/admin_users/list">管理员列表</el-menu-item>
+                    </el-submenu>
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title"><i class="el-icon-message"></i>歌曲管理</template>
