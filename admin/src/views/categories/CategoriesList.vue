@@ -61,6 +61,8 @@
         methods: {
             //显示
             async fetch () {
+                parents = []
+                child = []
                 const res = await this.$http.get('rest/categories')
                 this.items = res.data
                 this.group()
