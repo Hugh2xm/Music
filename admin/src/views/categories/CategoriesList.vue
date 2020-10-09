@@ -28,7 +28,7 @@
                             <el-button
                                     type="text"
                                     size="small"
-                                    @click="$router.push(`/categories/create/${scope.row._id}`)">
+                                    @click="$router.push(`/categories/edit/${scope.row._id}`)">
                                 编辑
                             </el-button>
                             <el-button

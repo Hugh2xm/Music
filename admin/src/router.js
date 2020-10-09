@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Main from './views/Main'
 import Home from './views/home/Home'
+import Login from './views/login/Login'
+
 
 import CategoriesList from './views/categories/CategoriesList'
 import CategoriesCreate from './views/categories/CategoriesCreate'
@@ -18,15 +20,15 @@ import CollectionsList from './views/collections/CollectionsList'
 import CommentsEdit from './views/comments/CommentsEdit'
 import CommentsList from './views/comments/CommentsList'
 
-import AdminUsersEdit from './views/adminusers/AdminUsersCreate'
 import AdminUsersList from './views/adminusers/AdminUsersList'
 import AdminUsersCreate from "./views/adminusers/AdminUsersCreate";
 
 Vue.use(Router)
 
 
-export default new Router({
+const router = new Router({
   routes: [
+    { path: '/login', name: 'login', component: Login, meta: {isPublic: true} },
     {
       path: '/',
       component: Main,
@@ -34,7 +36,7 @@ export default new Router({
         { path: '/',component: Home },
 
         { path: '/categories/create', component: CategoriesCreate },
-        { path: '/categories/create/:id', component: CategoriesCreate, props: true },
+        { path: '/categories/edit/:id', component: CategoriesCreate, props: true },
         { path: '/categories/list', component: CategoriesList},
 
         { path: '/ads/create', component:AdEdit },
@@ -60,3 +62,11 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from ,next) => {
+  if (!to.meta.isPublic && !localStorage.token) {
+    return next('/login')
+  }
+  next()
+})
+export default router
