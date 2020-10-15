@@ -17,6 +17,7 @@ app.use('/uploads',express.static(__dirname+'/uploads'))
 require('./plugins/db')(app)
 //路由
 require('./routes/admin')(app)
+require('./routes/web')(app)
 
 app.listen(3000, ()=> {
     console.log('http:/localhost:3000')

@@ -19,6 +19,11 @@
                         <el-menu-item index="/admin_users/create">新建管理员</el-menu-item>
                         <el-menu-item index="/admin_users/list">管理员列表</el-menu-item>
                     </el-submenu>
+                    <el-submenu index="1-4">
+                        <template slot="title">用户</template>
+                        <el-menu-item index="/users/create">新建用户</el-menu-item>
+                        <el-menu-item index="/users/list">用户列表</el-menu-item>
+                    </el-submenu>
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title"><i class="el-icon-message"></i>歌曲管理</template>

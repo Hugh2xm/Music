@@ -21,14 +21,17 @@ import CommentsEdit from './views/comments/CommentsEdit'
 import CommentsList from './views/comments/CommentsList'
 
 import AdminUsersList from './views/adminusers/AdminUsersList'
-import AdminUsersCreate from "./views/adminusers/AdminUsersCreate";
+import AdminUsersCreate from "./views/adminusers/AdminUsersCreate"
+
+import UsersList from './views/users/UsersList'
+import UsersCreate from "./views/users/UsersCreate";
 
 Vue.use(Router)
 
 
 const router = new Router({
   routes: [
-    { path: '/login', name: 'login', component: Login, meta: {isPublic: true} },
+    // { path: '/login', name: 'login', component: Login, meta: {isPublic: true} },
     {
       path: '/',
       component: Main,
@@ -58,6 +61,11 @@ const router = new Router({
         { path: '/admin_users/create', component:AdminUsersCreate },
         { path: '/admin_users/edit/:id', component:AdminUsersCreate, props: true },
         { path: '/admin_users/list', component:AdminUsersList },
+
+        { path: '/users/create', component:UsersCreate },
+        { path: '/users/edit/:id', component:UsersCreate, props: true },
+        { path: '/users/list', component:UsersList },
+
       ]
     }
   ]

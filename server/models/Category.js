@@ -10,6 +10,12 @@ const schema = new mongoose.Schema({
         ref: 'Category'
     }
 })
-
+//关联
+schema.virtual('children',{
+    localField: '_id',
+    foreignField: 'parent',
+    justOne: false,
+    ref: 'Category'
+})
 //导出
 module.exports = mongoose.model('Category',schema)

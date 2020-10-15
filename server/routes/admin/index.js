@@ -106,6 +106,4 @@ module.exports = app => {
             message: err.message
         })
     })
-
-
 }
