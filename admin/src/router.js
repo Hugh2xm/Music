@@ -31,7 +31,7 @@ Vue.use(Router)
 
 const router = new Router({
   routes: [
-    // { path: '/login', name: 'login', component: Login, meta: {isPublic: true} },
+    { path: '/login', name: 'login', component: Login, meta: {isPublic: true} },
     {
       path: '/',
       component: Main,

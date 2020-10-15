@@ -100,19 +100,22 @@ module.exports = app => {
 
     //用户数据导入
     router.get('/user/init',async(req,res)=> {
-        // const newsUser = ["udoxas", "carpuzi", "RADIY", "M4taiori", "joshuaempyre", "alexvsi.tv", "Pinball_Wiz", "Saya13", "theredshore", "Locky_bee", "martian", "triangelx"]
-        // const adminUser = ["zyb","yzj"]
-        // const newsList = adminUser.map( user => {
-        //     return {
-        //         username: user,
-        //         password: user
-        //         // password: Math.random().toString(36).slice(-8)
-        //     }
-        // })
-        // await admin_user.insertMany(newsList)
-        // res.send(newsList)
         await User.deleteMany({})
+        const newsUser = ["udoxas", "carpuzi", "RADIY", "M4taiori", "joshuaempyre", "alexvsi.tv", "Pinball_Wiz", "Saya13", "theredshore", "Locky_bee", "martian", "triangelx"]
+        // const newsUser = ["zyb","yzj"]
+        const newsList = newsUser.map( user => {
+            return {
+                username: user,
+                password: '123456'
+                // password: Math.random().toString(36).slice(-8)
+            }
+        })
+        await  User.insertMany(newsList)
+        // await admin_user.insertMany(newsList)
+        res.send(newsList)
     })
+
+    //
     app.use('/web/api', router)
 
 
