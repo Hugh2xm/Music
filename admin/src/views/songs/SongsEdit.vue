@@ -15,6 +15,7 @@
                                         class="upload-demo"
                                         drag
                                         :action="$http.defaults.baseURL + '/upload'"
+                                        :headers="getAuthHeaders()"
                                         :multiple="false"
                                         :limit="1"
                                         :on-success="Upload"
@@ -39,9 +40,9 @@
                         </el-col>
                         <el-col :span="10" >
                             <el-form-item label="歌曲类型">
-                                <el-select  v-model="model.parent" placeholder="请选择" multiple>
+                                <el-select  v-model="model.categories" placeholder="请选择" multiple>
                                     <el-option
-                                            v-for="item of parents"
+                                            v-for="item of categories"
                                             :label="item.name"
                                             :value="item._id"
                                             :key="item._id"
@@ -57,11 +58,6 @@
                         <el-col :span="10">
                             <el-form-item label="上传人">
                                 <el-input :disabled="true" ></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="20" :offset="2">
-                            <el-form-item label="歌曲介绍">
-                                <el-input type="textarea" v-model="model.introduction"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :offset="21" style="margin-top: 2rem">
@@ -91,7 +87,7 @@
                     download: 0
                 },
                 fileList: [],
-                parents: [],
+                categories: [],
                 videoUpload: {
                     progress: false,
                     progressPercent: 0,
@@ -145,7 +141,7 @@
             async fetchCategories() {
                 //注意的是这里拿到的是所有的分类
                 const res = await this.$http.get(`rest/categories`)
-                this.parents = res.data
+                this.categories = res.data
             },
 
         },

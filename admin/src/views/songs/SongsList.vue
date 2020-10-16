@@ -9,10 +9,6 @@
                 <el-table :data="items">
             <el-table-column prop="_id" label="ID" width="240"></el-table-column>
             <el-table-column prop="name" label="名称"></el-table-column>
-            <el-table-column prop="parent" label="类别">
-                <div></div>
-            </el-table-column>
-            <el-table-column prop="introduction" label="简介"></el-table-column>
             <el-table-column prop="download" label="下载次数"></el-table-column>
             <el-table-column
                     fixed="right"
