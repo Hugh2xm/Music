@@ -57,7 +57,7 @@
                         </el-col>
                         <el-col :span="10">
                             <el-form-item label="上传人">
-                                <el-input :disabled="true" ></el-input>
+                                <el-input :disabled="true" v-model="model.upload"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :offset="21" style="margin-top: 2rem">
@@ -105,13 +105,13 @@
             Upload(filter,file) {
                 console.log(file)
                 this.model.name=file.name
+                this.model.url = file.response.url
                 this.videoUpload.music = {
                     title : file.name,
                     author: '11',
                     url: file.response.url,
                     lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
                 }
-                this.model.url = file.response.url
             },
             // 修改和新建
             async save() {
@@ -137,6 +137,14 @@
                     name: this.model.name,
                     url: this.model.url
                 }]
+                this.model.upload = this.model.upload.username
+                this.videoUpload.music = {
+                    title: this.model.name,
+                    author: this.model.upload,
+                    url: this.model.url,
+                    lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
+                }
+                // console.log(this.model)
             },
             async fetchCategories() {
                 //注意的是这里拿到的是所有的分类

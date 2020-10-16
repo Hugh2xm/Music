@@ -17,6 +17,11 @@
                             label="ID">
                     </el-table-column>
                     <el-table-column
+                            prop="parent.name"
+                            sortable
+                            label="父类名称">
+                    </el-table-column>
+                    <el-table-column
                             prop="name"
                             sortable
                             label="分类名称">
@@ -77,7 +82,6 @@
                     this.fetch();
                 });
             },
-            //分类
 
         },
         created () {

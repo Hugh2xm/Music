@@ -22,7 +22,7 @@ module.exports = app => {
         if(req.Model.modelName === 'Category') {
             queryOptions.populate = 'parent'
         } else if(req.Model.modelName === 'Song') {
-            queryOptions.populate = 'parent'
+            queryOptions.populate = 'upload'
         }
         const items = await req.Model.find().setOptions(queryOptions).limit()
         res.send(items)
@@ -35,7 +35,11 @@ module.exports = app => {
 
     //编辑数据
     router.get('/:id',async (req,res) => {
-        const model = await req.Model.findById(req.params.id)
+        const queryOptions = {}
+        if(req.Model.modelName === 'Song') {
+            queryOptions.populate = 'upload'
+        }
+        const model = await req.Model.findById(req.params.id).setOptions(queryOptions)
         res.send(model)
     })
 

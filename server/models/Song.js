@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
     categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }],
     download: { type: Number },
     url: { type: String },
-    upload: { type: mongoose.SchemaTypes.ObjectId, ref: 'AdminUser' }
+    upload: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' }
 })
 
 module.exports = mongoose.model('Song',schema)
