@@ -1,0 +1,25 @@
+@import './variables';
+.el-drawer__container .el-drawer  .el-drawer__body {
+  background-color:#545c64  !important;
+}
+
+div[class='el-drawer rtl'] {
+  width: 15% !important;
+}
+
+div[class='el-drawer ttb'] {
+  height: 80% !important;
+}
+
+.el-zoom-in-top-enter-active,
+.el-zoom-in-top-leave-active {
+  opacity: 1;
+  transform: scaleY(1);
+  transition: transform 2000ms cubic-bezier(0.23, 1, 0.32, 1), opacity 2000ms cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center top;
+}
+.el-zoom-in-top-enter,
+.el-zoom-in-top-leave-active {
+  opacity: 0;
+  transform: scaleY(0);
+}
