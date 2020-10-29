@@ -3,6 +3,7 @@ module.exports = app => {
     const jwt = require('jsonwebtoken')
     const assert = require('http-assert')
     const AdminUser = require('../../models/AdminUser')
+    const fs = require('fs')
 
     const router = express.Router({
         mergeParams: true
@@ -70,6 +71,14 @@ module.exports = app => {
     app.post('/admin/api/upload',authMiddleware(), upload.single('file'),async (req,res)=> {
         const file = req.file
         file.url = `http://localhost:3000/uploads/ad/${file.filename}`
+        res.send(file)
+    })
+    //上传音乐
+    const upload1 = multer({dest: __dirname + '/../../uploads/music'})
+    app.post('/admin/api/uploadM',authMiddleware(), upload1.single('file'),async (req,res)=>{
+        const file = req.file
+        file.url = `http://localhost:3000/uploads/music/${file.originalname}`
+        fs.renameSync('./uploads/music/' + file.filename, './uploads/music/' + file.originalname);
         res.send(file)
     })
 

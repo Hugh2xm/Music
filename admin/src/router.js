@@ -13,6 +13,7 @@ import AdList from "./views/ad/AdList"
 
 import SongsEdit from './views/songs/SongsEdit'
 import SongsList from './views/songs/SongsList'
+import SongsUpload from "./views/songs/SongsUpload";
 
 import CollectionsEdit from './views/collections/CollectionsEdit'
 import CollectionsList from './views/collections/CollectionsList'
@@ -49,6 +50,7 @@ const router = new Router({
         { path: '/songs/create', component:SongsEdit },
         { path: '/songs/edit/:id', component:SongsEdit, props: true },
         { path: '/songs/list', component:SongsList },
+        { path: '/songs/upload', component: SongsUpload },
 
         { path: '/collections/create', component:CollectionsEdit },
         { path: '/collections/edit/:id', component:CollectionsEdit, props: true },

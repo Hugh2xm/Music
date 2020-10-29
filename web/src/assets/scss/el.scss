@@ -1,8 +1,23 @@
 @import './variables';
 .el-drawer__container .el-drawer  .el-drawer__body {
-  background-color:#545c64  !important;
+  background-color:white  !important;
+}
+.el-menu {
+  border: none;
+}
+.el-menu-item,.el-menu-item i,.el-submenu__title{
+  background-color: white !important;
+  color: black !important;
+}
+.el-icon-location {
+  color: black !important;
 }
 
+.el-menu-item:focus, .el-menu-item:hover, .el-submenu__title:hover {
+  color: #999999 !important;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+
+}
 div[class='el-drawer rtl'] {
   width: 15% !important;
 }
@@ -23,3 +38,20 @@ div[class='el-drawer ttb'] {
   opacity: 0;
   transform: scaleY(0);
 }
+.el-collapse {
+  border: transparent;
+}
+
+.el-collapse-item__content {
+  padding-bottom: 10px !important;
+}
+
+.v-modal {
+  z-index: 3!important;
+}
+
+//.el-button--info {
+//  color: #909399 !important;
+//  background: #f4f4f5 !important;
+//  border-color: #d3d4d6 !important;
+//}

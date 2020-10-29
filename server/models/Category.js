@@ -17,5 +17,13 @@ schema.virtual('children',{
     justOne: false,
     ref: 'Category'
 })
+
+schema.virtual('songList',{
+    localField: '_id',
+    foreignField: 'categories',
+    justOne: false,
+    ref: 'Song'
+})
+
 //导出
 module.exports = mongoose.model('Category',schema)

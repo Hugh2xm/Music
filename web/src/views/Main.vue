@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-container>
-            <el-header class="bg-primary">
-                <el-row :gutter="20" class="" >
+            <el-header class="bg-white border-bottom" style="position: fixed;top: 0;width: 100%;z-index: 999">
+                <el-row :gutter="20" >
                     <el-col :span="1" :offset="1" class="mt-2">
                         <el-button round>圆角按钮</el-button>
                     </el-col>
@@ -27,50 +27,44 @@
                             <i @click="drawer = true" class="el-icon-search btn" ></i>
                         </el-col>
                     </div>
-                </el-row>
-                <el-drawer
-                        :visible.sync="title"
-                        :with-header="false"
-                >
-                    <el-col :span="24">
-                        <el-menu
-                                default-active="1"
-                                class="el-menu-vertical-demo"
-                                background-color="#545c64"
-                                text-color="#fff"
-                                active-text-color="#ffd04b"
-                        >
-                            <router-link tag="div" to="/">
-                                <el-menu-item index="1">
-                                    <i class="el-icon-collection-tag"></i>
-                                    <span  slot="title">
+                    <el-drawer
+                            :visible.sync="title"
+                            :with-header="false"
+                    >
+                        <el-col :span="24">
+                            <el-menu
+                                    default-active="1"
+                                    class="el-menu-vertical-demo"
+                                    background-color="#545c64"
+                                    text-color="#fff"
+                                    active-text-color="#ffd04b"
+                            >
+                                <router-link tag="div" to="/">
+                                    <el-menu-item index="1">
+                                        <i class="el-icon-collection-tag"></i>
+                                        <span  slot="title">
                                         首页
                                     </span>
-                                </el-menu-item>
-                            </router-link>
-                            <router-link tag="div" to="/list">
-                                <el-menu-item index="2">
-                                    <i class="el-icon-setting"></i>
-                                    <span  slot="title">
-                                        消息中心
-                                    </span>
-                                </el-menu-item>
-                            </router-link>
-                            <router-link tag="div" to="/login">
-                                <el-menu-item index="3">
-                                    <i class="el-icon-setting"></i>
-                                    <span  slot="title">
-                                        消息中心
-                                    </span>
-                                </el-menu-item>
-                            </router-link>
-                        </el-menu>
-                    </el-col>
-                </el-drawer>
-                <el-drawer
-                        :visible.sync="drawer"
-                        :with-header="false"
-                        :direction="direction">
+                                    </el-menu-item>
+                                </router-link>
+                                <router-link tag="div"
+                                             :to="`/tlist/${index._id}`"
+                                             v-for="(index,item) of list"
+                                             :key="item">
+                                    <el-menu-item :index="(item+1).toString()">
+                                        <i class="el-icon-collection-tag"></i>
+                                        <span slot="title">
+                                        {{index.name}}
+                                        </span>
+                                    </el-menu-item>
+                                </router-link>
+                            </el-menu>
+                        </el-col>
+                    </el-drawer>
+                    <el-drawer
+                            :visible.sync="drawer"
+                            :with-header="false"
+                            :direction="direction">
                         <div class="search">
                             <div class="demo-input-suffix">
                                 <el-input
@@ -80,10 +74,11 @@
                                 </el-input>
                             </div>
                         </div>
-                </el-drawer>
+                    </el-drawer>
+                </el-row>
             </el-header>
         </el-container>
-        <router-view></router-view>
+        <router-view :key="$route.path"></router-view>
         <el-container class="text-center mt-5 border-top pt-5">
             <el-footer>
                 <el-row :gutter="20">
@@ -161,7 +156,18 @@
                 drawer: false,
                 direction: 'ttb',
                 input: '',
+                list: '',
             };
+        },
+        methods: {
+            async fetchMenu() {
+                const res = await this.$http.get(`category/list`)
+                this.list = res.data
+                console.log(this.list)
+            }
+        },
+        created() {
+            this.fetchMenu()
         }
     }
 </script>
@@ -169,10 +175,10 @@
 <style scoped lang="scss">
 .btn {
     font-size: 2rem;
-    color: white;
+    color: black;
 }
 .btn:hover {
-    color: #ffd04b;
+    color: #999999;
 }
 .search {
     width: 50%;

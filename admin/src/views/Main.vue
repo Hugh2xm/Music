@@ -31,6 +31,7 @@
                         <template slot="title">歌曲</template>
                         <el-menu-item index="/songs/create">新建歌曲</el-menu-item>
                         <el-menu-item index="/songs/list">歌曲列表</el-menu-item>
+                        <el-menu-item index="/songs/upload">上传</el-menu-item>
                     </el-submenu>
                     <el-submenu index="2-2">
                         <template slot="title">合辑</template>

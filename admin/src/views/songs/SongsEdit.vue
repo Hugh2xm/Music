@@ -14,7 +14,7 @@
                                 <el-upload
                                         class="upload-demo"
                                         drag
-                                        :action="$http.defaults.baseURL + '/upload'"
+                                        :action="$http.defaults.baseURL + '/uploadM'"
                                         :headers="getAuthHeaders()"
                                         :multiple="false"
                                         :limit="1"
@@ -138,11 +138,16 @@
                     url: this.model.url
                 }]
                 this.model.upload = this.model.upload.username
-                this.videoUpload.music = {
-                    title: this.model.name,
-                    author: this.model.upload,
-                    url: this.model.url,
-                    lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
+                this.videoUpload = {
+                    progress: false,
+                    progressPercent: 0,
+                    successPercent: 0,
+                    music: {
+                        title: this.model.name,
+                        author: this.model.upload,
+                        url: this.model.url,
+                        lrc: '[00:00.00]lrc here\n[00:01.00]aplayer'
+                    }
                 }
                 // console.log(this.model)
             },
