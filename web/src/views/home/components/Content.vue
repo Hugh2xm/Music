@@ -7,18 +7,15 @@
                 </el-header>
                 <el-main>
                     <div>
-                        <el-button @click="show2 = !show2" style="display: none" ref="pic">Click Me</el-button>
                         <div class="d-flex jc-between">
-<!--                            <transition name="el-zoom-in-center">-->
                             <div class="bg-black"
-                                 v-for="item in 4" :key="item"
+                                 v-for="(item,index) in hotList" :key="index"
                                  style="width: 20%;position: relative;overflow: hidden">
-                                <a href="javaScript:;" class="hot-image py-7" v-bind:style="{backgroundImage:'url(' + icon.url + ')'}"></a>
+                                <router-link :to="`/list/${item._id}`" class="hot-image py-7" v-bind:style="{backgroundImage:'url(' + icon.url + ')'}"></router-link>
                                 <div class="hot-body">
-                                    <p>热门·水</p>
+                                    <p>{{item.parent[0].name}}·{{item.name}}</p>
                                 </div>
                             </div>
-<!--                            </transition>-->
                         </div>
                     </div>
                 </el-main>
@@ -34,7 +31,7 @@
                         <a class="card-image py-7" href="javascript:;" v-bind:style="{backgroundImage:'url(' + src + ')'}"></a>
                         <div class="card-body">
                             <router-link :to="`/tlist/${itemC._id}`" href="/" v-for="(itemC,indexC) in item.children" :key="indexC">| {{itemC.name}} </router-link>
-                            <router-link :to="`/tlist/${item._id}`" ><h3>{{item.name}}</h3></router-link>
+                            <router-link :to="`/ttlist/${item._id}`" ><h3>{{item.name}}</h3></router-link>
                         </div>
                     </div>
                 </el-main>
@@ -51,26 +48,25 @@
                 icon: {
                     url: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
                 },
-                show2: false,
                 src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
                 url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                CList: []
+                CList: [],
+                hotList: ''
             }
-        },
-
-        mounted() {
-            this.$nextTick(function () {
-                this.$refs.pic.$el.click()
-            })
         },
         methods: {
             async fetchCategories() {
                 const res = await this.$http.get('category/list')
                 this.CList = res.data
+            },
+            async fetchHostList() {
+                const res = await this.$http.get('hot')
+                this.hotList = res.data
             }
         },
         created() {
             this.fetchCategories()
+            this.fetchHostList()
         }
     }
 </script>

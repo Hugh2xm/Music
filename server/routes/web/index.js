@@ -140,7 +140,19 @@ module.exports = app => {
         ])
         res.send(list)
     })
+    //parent-children
+    router.get('/category/children/:id',async (req,res)=> {
+        const parent = await Category.findById(req.params.id)
+        const children = await Category.where({
+            parent: parent._id
+        }).find()
 
+        children.unshift({
+            name: parent.name
+        })
+
+        res.send(children)
+    })
     //用户数据导入
     router.get('/user/init',async(req,res)=> {
         await User.deleteMany({})
@@ -194,11 +206,6 @@ module.exports = app => {
         res.send(MusicList)
     })
 
-    router.get('/music',async (req,res)=> {
-        const list = await Song.find()
-        res.send(list)
-    })
-
     //音乐数据接口1
     router.get('/music/tlist/:id',async (req,res) => {
 
@@ -227,9 +234,6 @@ module.exports = app => {
     })
     //音乐数据接口2
     router.get('/music/list/:id',async (req,res)=> {
-        const parent = await Category.where({
-            _id: req.params.id
-        }).find().lean()
         const list = await Category.aggregate([
             {
                 $lookup: {
@@ -246,6 +250,90 @@ module.exports = app => {
         res.send(list)
     })
 
+    //计算热门
+    router.get('/hot',async (req,res)=> {
+
+        const parent = await Category.findOne({
+            name: '音效'
+        })
+
+        const children = await Category.find({
+            parent: parent._id
+        })
+
+        let son = []
+        for (let i = 0;i<children.length;i++) {
+            let temp = await Category.find({
+                parent: children[i]._id
+            })
+            for (let j = 0; j < temp.length; j++) {
+                son.push(temp[j])
+            }
+        }
+
+        let listSon = []
+        for (let i = 0; i < son.length; i++) {
+            let temp = await Category.find({
+                parent: son[i]._id
+            })
+            for (let j = 0; j < temp.length; j++) {
+                listSon.push(temp[j])
+            }
+        }
+
+        let listHot = []
+
+        for (let i = 0; i < listSon.length; i++) {
+            // let temp =  await Category.find({
+            //     _id : listSon[i]._id
+            // }).populate({
+            //     path: 'newsList'
+            // }).lean()
+            const list = await Category.aggregate([
+                {
+                    $lookup: {
+                        from: 'Songs',
+                        localField: '_id',
+                        foreignField: 'categories',
+                        as: 'songList'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'categories',
+                        localField: 'parent',
+                        foreignField: '_id',
+                        as: 'parent'
+                    }
+                },
+                {
+                    $match: {  "_id":new ObjectId(listSon[i]._id) }
+                }
+            ])
+            listHot.push(list[0])
+        }
+
+        listHot.map(item => {
+            let total = 0;
+            item.songList.map( item=> {
+                total+=item.download
+            })
+            item.numbers = total
+        })
+
+        for (let j = 0; j < listHot.length - 1; j++) {
+            //两两比较，如果前一个比后一个大，则交换位置。
+            for (let i = 0; i < listHot.length - 1 - j; i++) {
+                if (listHot[i].numbers < listHot[i + 1].numbers) {
+                    let temp = listHot[i];
+                    listHot[i] = listHot[i + 1];
+                    listHot[i + 1] = temp;
+                }
+            }
+        }
+
+        res.send(listHot.slice(0,4))
+    })
 
     app.use('/web/api', router)
 

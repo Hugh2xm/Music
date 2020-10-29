@@ -18,7 +18,7 @@ schema.virtual('children',{
     ref: 'Category'
 })
 
-schema.virtual('songList',{
+schema.virtual('newsList', {
     localField: '_id',
     foreignField: 'categories',
     justOne: false,

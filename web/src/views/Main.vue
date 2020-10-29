@@ -48,7 +48,7 @@
                                     </el-menu-item>
                                 </router-link>
                                 <router-link tag="div"
-                                             :to="`/tlist/${index._id}`"
+                                             :to="`/ttlist/${index._id}`"
                                              v-for="(index,item) of list"
                                              :key="item">
                                     <el-menu-item :index="(item+1).toString()">
