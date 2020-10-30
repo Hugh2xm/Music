@@ -24,10 +24,11 @@
                 <p class="fs-xs ml-5 text-grey">{{ audio.currentTime | formatSecond}}/{{ audio.maxTime | formatSecond}}</p>
             </div>
             <div class="d-flex ai-center flex-grow-1 text-grey fs-xs ml-5 mr-2">
-                <p>{{name}}</p>
+                <p>{{name.slice(0,-4)}}</p>
             </div>
             <div class="d-flex ai-center mr-5">
                 <el-button type="info" @click="downloadExcel" class="ml-5">下载<i class="el-icon-download el-icon--right"></i></el-button>
+                <a :href="this.downloadUrl" :download="this.name" class="btn-download" style="display: none" ref="downClick">下载<i class="el-icon-download el-icon--right pl-1"></i></a>
             </div>
         </div>
         <el-collapse>
@@ -70,13 +71,15 @@
                     // 音频最大播放时长
                     maxTime: 0,
                 },
-                icon: 'bell'
+                icon: 'bell',
+                downloadUrl: ''
             }
         },
         props: {
             url: String,
             name: String,
-            BNumber: Number
+            BNumber: Number,
+            id: String
         },
         methods: {
             // 控制音频的播放与暂停
@@ -115,11 +118,10 @@
                 this.audio.maxTime = parseInt(res.target.duration)
             },
             //下载
-            downloadExcel() {
-                let musicD = this.$refs.audio.src
-                let a = document.createElement('a')
-                a.href = musicD
-                a.click();
+            async downloadExcel() {
+                const res = await this.$http.get(`music/${this.id}`)
+                this.downloadUrl = res.data
+                this.$refs.downClick.click()
             },
             //播放结束事件
             onended() {
@@ -145,5 +147,18 @@
 </script>
 
 <style scoped>
+.btn-download {
+    border: 1px solid #d3d4d6;
+    background-color: #f4f4f5;
+    border-radius: .3rem;
+    padding: .6rem 1rem;
+    color: #909399;
+    font-size: 14px;
+}
 
+.btn-download:hover {
+    background-color: #909399;
+    color: #fff;
+    border: #909399;
+}
 </style>

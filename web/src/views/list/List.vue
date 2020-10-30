@@ -16,7 +16,12 @@
                                 <h2>{{this.list.name}}</h2>
                             </div>
                             <div class="text item px-5 py-2">
-                                <VueAudio v-for="(item,index) in list.songList" :key="index" :url="item.url" :name="item.name.slice(0,-4)" :BNumber="item.download"></VueAudio>
+                                <VueAudio v-for="(item,index) in list.songList" :key="index"
+                                          :url="item.url"
+                                          :name="item.name"
+                                          :BNumber="item.download"
+                                          :id="item._id">
+                                </VueAudio>
                             </div>
                         </el-card>
                         </transition>

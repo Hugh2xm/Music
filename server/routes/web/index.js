@@ -340,8 +340,15 @@ module.exports = app => {
         res.send(listHot.slice(0,4))
     })
 
+    //音乐下载
+    router.get('/music/:id',userMiddleware(),async (req,res)=> {
+        const model = await Song.findById(req.params.id)
+        res.send(model.url)
+    })
+
     app.use('/web/api', router)
 
+    //登录验证
     app.post('/web/api/login', async (req,res)=> {
         const { username , password } = req.body
         //根据用户名找用户
