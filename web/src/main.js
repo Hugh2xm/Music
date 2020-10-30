@@ -9,10 +9,8 @@ Vue.use(AudioVisual)
 import './assets/scss/style.scss'
 import './assets/scss/el.scss'
 
-import axios from 'axios'
-Vue.prototype.$http = axios.create({
-  baseURL: 'http://localhost:3000/web/api'
-})
+import http from './http'
+Vue.prototype.$http = http
 
 new Vue({
   router,

@@ -1,19 +1,19 @@
 <template>
     <div class="login-container">
         <el-card header="Login" class="login-card text-center fs-xxl py-3" style="border-radius: 1.1rem">
-<!--            @submit.native.prevent="login"-->
-            <el-form >
+
+            <el-form @submit.native.prevent="login">
                 <el-form-item label="用户名">
                     <el-input
                             placeholder="请输入账号"
-                            v-model="input1"
+                            v-model="model.username"
                             clearable>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="密码">
                     <el-input
                             placeholder="请输入密码"
-                            v-model="input2"
+                            v-model="model.password"
                             type="password"
                             clearable>
                     </el-input>
@@ -32,10 +32,19 @@
         data(){
             return {
                 model: {},
-                input1: '',
-                input2: ''
             }
         },
+        methods: {
+            async login(){
+                const  res = await this.$http.post('login',this.model)
+                localStorage.token = res.data.token
+                this.$router.push('/')
+                this.$message({
+                    type: 'success',
+                    message: '登录成功'
+                })
+            }
+        }
     }
 </script>
 

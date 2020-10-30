@@ -7,6 +7,11 @@ module.exports = app => {
     const Song = mongoose.model('Song')
     const Ad = mongoose.model('Ad')
     const TSong = mongoose.model('TSong')
+    const Users = require('../../models/User')
+    const assert = require('http-assert')
+
+    //中间件(注意引用的时候要加小括号)
+    const userMiddleware = require('../../middleware/user')
 
     //首页轮播图
     router.get('/home/pics',async (req,res)=> {
@@ -337,5 +342,36 @@ module.exports = app => {
 
     app.use('/web/api', router)
 
+    app.post('/web/api/login', async (req,res)=> {
+        const { username , password } = req.body
+        //根据用户名找用户
+        const user = await Users.findOne({username}).select('+password')
+        // if(!user) {
+        //     return res.status(422).send({
+        //         message: '用户不存在'
+        //     })
+        // }
+        assert(user,422,'用户不存在')
+        //校验密码
+        const isValid = require('bcrypt').compareSync(password,user.password)
+        assert(isValid,422,'密码错误')
+        // if(!isValid) {
+        //     return res.status(422).send({
+        //         message: '密码错误'
+        //     })
+        // }
+        //返回token
+        const jwt = require('jsonwebtoken')
+        const token = jwt.sign({
+            id: user._id,
+        },app.get('secret'))
+        res.send({token})
+    })
 
+    //错误处理函数
+    app.use(async (err,req,res,next)=> {
+        res.status(err.statusCode || 500).send({
+            message: err.message
+        })
+    })
 }
