@@ -22,7 +22,7 @@
                     <el-button  type="info" native-type="submit" plain>登录</el-button>
                 </el-form-item>
             </el-form>
-            <el-button style="border: transparent" plain class="fs-xs">注册新用户</el-button>
+            <router-link tag="el-button" to="/register" style="border: transparent" plain class="fs-xs">注册新用户</router-link>
         </el-card>
     </div>
 </template>

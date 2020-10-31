@@ -9,6 +9,7 @@ module.exports = app => {
     const TSong = mongoose.model('TSong')
     const Users = require('../../models/User')
     const assert = require('http-assert')
+    const jwt = require('jsonwebtoken')
 
     //中间件(注意引用的时候要加小括号)
     const userMiddleware = require('../../middleware/user')
@@ -346,6 +347,55 @@ module.exports = app => {
         res.send(model.url)
     })
 
+    //注册
+    router.post('/register',async (req,res)=> {
+        // console.log(req.body)
+        const user = await User.create({
+            username: req.body.username,
+            password: req.body.password,
+        })
+        res.send(user)
+    })
+
+    //查询用户
+    router.get('/user/:id',async (req,res)=> {
+        let temp = ''
+        const users = await User.findOne({
+            username: req.params.id
+        })
+        if (users) {
+            temp = true
+        } else {
+            temp = false
+        }
+        res.send(temp)
+    })
+
+    //用户信息
+    router.get('/users/profile', async (req,res)=> {
+        //通过请求头获取token中的信息
+        // console.log(String(req.headers.authorization).split(' ').pop())
+        const raw = String(req.headers.authorization).split(' ').pop()
+        //通过token解密
+        const { id } = jwt.verify(raw,app.get('secret'))
+        const user = await User.findById(id)
+        res.send(user)
+    })
+
+    //修改密码之登录
+    app.post('/web/api/users/password',async (req,res)=> {
+        const {username, password} = req.body
+        const user = await User.findOne({username}).select('+password')
+        const isValid = require('bcrypt').compareSync(password,user.password)
+        res.send(isValid)
+    })
+    //修改密码
+    router.put('/edit/password/:id',async (req,res)=> {
+        // console.log(req.body.newPassword)
+        const model = await User.findByIdAndUpdate(req.params.id,{password:req.body.newPassword})
+        res.send(model)
+    })
+
     app.use('/web/api', router)
 
     //登录验证
@@ -368,12 +418,12 @@ module.exports = app => {
         //     })
         // }
         //返回token
-        const jwt = require('jsonwebtoken')
         const token = jwt.sign({
-            id: user._id,
+            id: String(user._id),
         },app.get('secret'))
         res.send({token})
     })
+
 
     //错误处理函数
     app.use(async (err,req,res,next)=> {

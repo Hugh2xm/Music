@@ -16,7 +16,12 @@
                                     <router-link tag="div" to="/login">
                                         <el-dropdown-item icon="el-icon-place" >登录/注销</el-dropdown-item>
                                     </router-link>
-                                    <el-dropdown-item icon="el-icon-setting">设置</el-dropdown-item>
+                                    <router-link tag="div" to="/register">
+                                        <el-dropdown-item icon="el-icon-place" >注册</el-dropdown-item>
+                                    </router-link>
+                                    <router-link tag="div" to="/set">
+                                        <el-dropdown-item icon="el-icon-setting">设置</el-dropdown-item>
+                                    </router-link>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </el-col>

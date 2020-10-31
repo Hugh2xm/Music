@@ -7,6 +7,8 @@ import Home from './views/home/Home.vue'
 import List from './views/list/List.vue'
 import TList from './views/list/TList.vue'
 import TTList from './views/list/TTList.vue'
+import Register from './views/register/Register.vue'
+import Set from './views/set/Set.vue';
 
 
 Vue.use(Router)
@@ -21,6 +23,8 @@ export default new Router({
         { path: '/tlist/:id', name: 'tlist', component: TList ,props: true},
         { path: '/list/:id', name: 'list', component: List ,props: true},
         { path: '/ttlist/:id', name: 'ttlist', component: TTList ,props: true},
+        { path: '/register', name: 'register', component: Register},
+        { path: '/set', name: 'set', component: Set}
       ]
     },
     {
