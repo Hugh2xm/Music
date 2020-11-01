@@ -371,6 +371,30 @@ module.exports = app => {
         res.send(temp)
     })
 
+    //搜索功能
+    router.get('/home/search/:id', async (req,res) => {
+        // res.send(req.params.id)
+        let regexp = new RegExp(req.params.id,'i')
+        Song.find(
+            { $or: [{ name: {$regex:regexp}}] },(err,doc) => {
+                if(err) {
+                    console.log(err)
+                    res.send({
+                        code:400,
+                        msg:"查询失败"
+                    })
+                }
+                if(doc) {
+                    res.send({
+                        code: 200,
+                        msg: "查询成功",
+                        data: doc
+                    })
+                }
+            }
+        )
+    })
+
     //用户信息
     router.get('/users/profile', async (req,res)=> {
         //通过请求头获取token中的信息

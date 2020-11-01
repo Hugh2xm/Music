@@ -72,10 +72,8 @@
                             :direction="direction">
                         <div class="search">
                             <div class="demo-input-suffix">
-                                <el-input
-                                        placeholder="请输入内容"
-                                        prefix-icon="el-icon-search"
-                                        v-model="input">
+                                <el-input placeholder="请输入内容" v-model="input" class="input-with-select" @keyup.enter.native="searchSong">
+                                    <el-button slot="append" icon="el-icon-search" @click="searchSong"></el-button>
                                 </el-input>
                             </div>
                         </div>
@@ -161,7 +159,7 @@
                 drawer: false,
                 direction: 'ttb',
                 input: '',
-                list: '',
+                list: ''
             };
         },
         methods: {
@@ -169,6 +167,9 @@
                 const res = await this.$http.get(`category/list`)
                 this.list = res.data
                 console.log(this.list)
+            },
+            async searchSong() {
+                this.$router.push(`/slist/${this.input}`)
             }
         },
         created() {
