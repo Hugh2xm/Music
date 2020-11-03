@@ -256,6 +256,16 @@ module.exports = app => {
         res.send(list)
     })
 
+
+    //音乐上传
+    const multer = require('multer')
+    const upload = multer({dest: __dirname + '/../../uploads/ad'})
+    app.post('/web/api/upload', upload.single('file'),async (req,res)=> {
+        const file = req.file
+        file.url = `http://localhost:3000/uploads/ad/${file.filename}`
+        res.send(file)
+    })
+
     //计算热门
     router.get('/hot',async (req,res)=> {
 

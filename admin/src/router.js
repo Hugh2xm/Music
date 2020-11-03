@@ -25,7 +25,9 @@ import AdminUsersList from './views/adminusers/AdminUsersList'
 import AdminUsersCreate from "./views/adminusers/AdminUsersCreate"
 
 import UsersList from './views/users/UsersList'
-import UsersCreate from "./views/users/UsersCreate";
+import UsersCreate from "./views/users/UsersCreate"
+
+import CheckList from './views/check/Check'
 
 Vue.use(Router)
 
@@ -68,6 +70,7 @@ const router = new Router({
         { path: '/users/edit/:id', component:UsersCreate, props: true },
         { path: '/users/list', component:UsersList },
 
+        { path: '/check/list' , component: CheckList}
       ]
     }
   ]

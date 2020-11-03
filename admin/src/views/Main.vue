@@ -43,6 +43,10 @@
                         <el-menu-item index="/comments/create">新建评论</el-menu-item>
                         <el-menu-item index="/comments/list">评论列表</el-menu-item>
                     </el-submenu>
+                    <el-submenu index="2-4">
+                        <template slot="title">用户上传管理</template>
+                        <el-menu-item index="/check/list">上传列表</el-menu-item>
+                    </el-submenu>
                 </el-submenu>
             </el-menu>
         </el-aside>

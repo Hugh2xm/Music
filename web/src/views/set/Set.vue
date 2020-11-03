@@ -28,7 +28,24 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="配置管理">配置管理</el-tab-pane>
+            <el-tab-pane label="上传音频">
+                <div class="bg-white pt-4 px-6">
+                    <div class="set-head">音乐上传</div>
+                    <div class="set-info pb-3" >
+                        <el-form label-width="120px" @submit.native.prevent="save">
+                            <el-form-item label="图片" style="margin-top: 0.5rem;">
+                                <el-upload
+                                        class="upload-demo"
+                                        drag
+                                        :action="$http.defaults.baseURL + '/upload'"
+                                        :multiple="false"
+                                        :limit="1">
+                                </el-upload>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </div>
+            </el-tab-pane>
             <el-tab-pane label="角色管理">角色管理</el-tab-pane>
             <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
         </el-tabs>
