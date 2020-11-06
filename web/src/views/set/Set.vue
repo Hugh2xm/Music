@@ -33,14 +33,32 @@
                     <div class="set-head">音乐上传</div>
                     <div class="set-info pb-3" >
                         <el-form label-width="120px" @submit.native.prevent="save">
-                            <el-form-item label="图片" style="margin-top: 0.5rem;">
+                            <el-form-item style="margin-top: 0.5rem;">
                                 <el-upload
                                         class="upload-demo"
                                         drag
                                         :action="$http.defaults.baseURL + '/upload'"
                                         :multiple="false"
-                                        :limit="1">
+                                        :limit="1"
+                                        :on-success="Upload"
+                                >
+                                    <i class="el-icon-upload"></i>
+                                    <div class="el-upload__text">将音频拖到此处，或<em>点击上传</em></div>
                                 </el-upload>
+                            </el-form-item>
+                            <el-form-item label="歌曲名">
+                                <el-input v-model="model.name" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="歌曲类型">
+                                <el-cascader
+                                        :props="{ expandTrigger: 'hover' }"
+                                        :options="categories"
+                                        v-model="value"
+                                        :clearable="true"
+                                        @change="handleChange"></el-cascader>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" native-type="submit">保存</el-button>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -56,6 +74,7 @@
     export default {
         name: "Set",
         data() {
+            //修改密码表单规则
             let validatePass = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请输入密码'));
@@ -90,11 +109,23 @@
 
                 },
                 display: true,
+                model: {
+                    name:'',
+                    url: '',
+                    categories: ''
+                },
+                categories: [],
+                options:[],
+                value: ''
+
+
             }
         },
         methods: {
+            //修改密码方法：
             async checkUserID () {
                 const res = await this.$http.get(`users/profile`)
+                this.model.username = res.data.username
                 Object.assign(this.ruleForm,res.data)
             },
             async checkPassword () {
@@ -110,10 +141,34 @@
                 if(res) {
                     this.$router.push('/login');
                 }
+            },
+            //上传音乐方法：
+            Upload(filter,file) {
+                this.model.name = file.name
+                this.model.url = file.response.url
+            },
+            async save() {
+                await this.$http.post('songs/UpSong',this.model)
+                //页面跳转
+                this.$router.push('/set')
+                this.$message({
+                    type: 'success',
+                    message: '上传成功'
+                })
+            },
+            //获取分类
+            async categoryLast() {
+                const res =  await this.$http.get('category/last')
+                this.categories = res.data
+                this.categories = JSON.parse(JSON.stringify(this.categories).replace(/name/g, 'label').replace(/_id/g, 'value'))
+            },
+            handleChange() {
+                this.model.categories = this.value[2]
             }
         },
         created() {
             this.checkUserID()
+            this.categoryLast()
         }
     }
 </script>

@@ -7,9 +7,11 @@ module.exports = app => {
     const Song = mongoose.model('Song')
     const Ad = mongoose.model('Ad')
     const TSong = mongoose.model('TSong')
+    const UpSong = mongoose.model('UpSong')
     const Users = require('../../models/User')
     const assert = require('http-assert')
     const jwt = require('jsonwebtoken')
+    const fs=require('fs')
 
     //中间件(注意引用的时候要加小括号)
     const userMiddleware = require('../../middleware/user')
@@ -159,6 +161,50 @@ module.exports = app => {
 
         res.send(children)
     })
+    //获取音乐分类最后分类信息
+    router.get('/category/last',async (req,res)=> {
+        const parent = await Category.findOne({
+            name: '音效'
+        })
+
+        const one = await Category.findOne({
+            name: '音效'
+        }).populate({
+            path: 'children',
+            populate: {
+                path: 'children',
+                populate: {
+                    path: 'children'
+                }
+            }
+        }).lean()
+
+        const children = await Category.find({
+            parent: parent._id
+        })
+
+        // let son = []
+        // for (let i = 0;i<children.length;i++) {
+        //     let temp = await Category.find({
+        //         parent: children[i]._id
+        //     })
+        //     for (let j = 0; j < temp.length; j++) {
+        //         son.push(temp[j])
+        //     }
+        // }
+        //
+        // let listSon = []
+        // for (let i = 0; i < son.length; i++) {
+        //     let temp = await Category.find({
+        //         parent: son[i]._id
+        //     })
+        //     for (let j = 0; j < temp.length; j++) {
+        //         listSon.push(temp[j])
+        //     }
+        // }
+        res.send(one.children)
+    })
+
     //用户数据导入
     router.get('/user/init',async(req,res)=> {
         await User.deleteMany({})
@@ -257,13 +303,20 @@ module.exports = app => {
     })
 
 
-    //音乐上传
+    //音频上传
     const multer = require('multer')
-    const upload = multer({dest: __dirname + '/../../uploads/ad'})
+    const upload = multer({dest: __dirname + '/../../uploads/music'})
     app.post('/web/api/upload', upload.single('file'),async (req,res)=> {
         const file = req.file
-        file.url = `http://localhost:3000/uploads/ad/${file.filename}`
+        file.url = `http://localhost:3000/uploads/music/${file.originalname}`
+        //保存在服务端的名字
+        fs.renameSync('./uploads/music/' + file.filename, './uploads/music/' + file.originalname);
         res.send(file)
+    })
+    //将音频数据上传到UpSong数据库中
+    router.post('/songs/UpSong',async (req,res)=> {
+        const model = await UpSong.create(req.body)
+        res.send(model)
     })
 
     //计算热门

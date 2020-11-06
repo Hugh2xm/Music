@@ -44,7 +44,7 @@
                                     text-color="#fff"
                                     active-text-color="#ffd04b"
                             >
-                                <router-link tag="div" to="/">
+                                <router-link tag="div" to="/" @click.native="rightDrawDisplay">
                                     <el-menu-item index="1">
                                         <i class="el-icon-collection-tag"></i>
                                         <span  slot="title">
@@ -52,11 +52,12 @@
                                     </span>
                                     </el-menu-item>
                                 </router-link>
-                                <router-link tag="div"
+                                <router-link tag="a"
                                              :to="`/ttlist/${index._id}`"
                                              v-for="(index,item) of list"
-                                             :key="item">
-                                    <el-menu-item :index="(item+1).toString()">
+                                             :key="item"
+                                             @click.native="rightDrawDisplay">
+                                    <el-menu-item :index="(item+1).toString()" >
                                         <i class="el-icon-collection-tag"></i>
                                         <span slot="title">
                                         {{index.name}}
@@ -66,13 +67,14 @@
                             </el-menu>
                         </el-col>
                     </el-drawer>
+                    <!-- 搜索下拉框 -->
                     <el-drawer
                             :visible.sync="drawer"
                             :with-header="false"
                             :direction="direction">
                         <div class="search">
                             <div class="demo-input-suffix">
-                                <el-input placeholder="请输入内容" v-model="input" class="input-with-select" @keyup.enter.native="searchSong">
+                                <el-input :placeholder="this.searchTitle" v-model="input" class="input-with-select" @keyup.enter.native="searchSong" >
                                     <el-button slot="append" icon="el-icon-search" @click="searchSong"></el-button>
                                 </el-input>
                             </div>
@@ -159,7 +161,9 @@
                 drawer: false,
                 direction: 'ttb',
                 input: '',
-                list: ''
+                list: '',
+                searchList: [],
+                searchTitle: ''
             };
         },
         methods: {
@@ -169,11 +173,31 @@
                 console.log(this.list)
             },
             async searchSong() {
-                this.$router.push(`/slist/${this.input}`)
+                if(this.input === '') {
+                    this.$router.push(`/slist/${this.searchTitle}`)
+                } else {
+                    this.$router.push(`/slist/${this.input}`)
+                }
+                this.drawer = false
+                this.categoryLast()
+            },
+            async categoryLast() {
+                const res =  await this.$http.get('category/last')
+                for (let i = 0; i < res.data[0].children[0].children.length; i++) {
+                    this.searchList.push(res.data[0].children[0].children[i].name)
+                }
+                let index = Math.floor((Math.random()*this.searchList.length));
+                this.searchTitle = this.searchList[index]
+
+            },
+
+            rightDrawDisplay()  {
+                this.title =  false
             }
         },
         created() {
             this.fetchMenu()
+            this.categoryLast()
         }
     }
 </script>
