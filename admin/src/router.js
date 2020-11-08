@@ -27,8 +27,8 @@ import AdminUsersCreate from "./views/adminusers/AdminUsersCreate"
 import UsersList from './views/users/UsersList'
 import UsersCreate from "./views/users/UsersCreate"
 
-import CheckList from './views/check/Check'
-
+import CheckList from './views/check/CheckList'
+import CheckParticular from './views/check/CheckParticular'
 Vue.use(Router)
 
 
@@ -70,7 +70,8 @@ const router = new Router({
         { path: '/users/edit/:id', component:UsersCreate, props: true },
         { path: '/users/list', component:UsersList },
 
-        { path: '/check/list' , component: CheckList}
+        { path: '/check/list' , component: CheckList},
+        { path: '/check/particular/:id', component:CheckParticular, props: true },
       ]
     }
   ]

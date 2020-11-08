@@ -72,6 +72,7 @@
 
 <script>
     export default {
+        inject: ['reload'],
         name: "Set",
         data() {
             //修改密码表单规则
@@ -112,7 +113,7 @@
                 model: {
                     name:'',
                     url: '',
-                    categories: ''
+                    categories: '',
                 },
                 categories: [],
                 options:[],
@@ -125,7 +126,7 @@
             //修改密码方法：
             async checkUserID () {
                 const res = await this.$http.get(`users/profile`)
-                this.model.username = res.data.username
+                this.model.upload = res.data._id
                 Object.assign(this.ruleForm,res.data)
             },
             async checkPassword () {
@@ -146,11 +147,12 @@
             Upload(filter,file) {
                 this.model.name = file.name
                 this.model.url = file.response.url
+                this.model.mask = 0
             },
             async save() {
                 await this.$http.post('songs/UpSong',this.model)
-                //页面跳转
-                this.$router.push('/set')
+                // 页面跳转
+                this.reload()
                 this.$message({
                     type: 'success',
                     message: '上传成功'

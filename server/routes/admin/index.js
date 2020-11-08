@@ -3,6 +3,7 @@ module.exports = app => {
     const jwt = require('jsonwebtoken')
     const assert = require('http-assert')
     const AdminUser = require('../../models/AdminUser')
+    const UpSong = require('../../models/UpSong')
     const fs = require('fs')
 
     const router = express.Router({
@@ -22,10 +23,10 @@ module.exports = app => {
         const queryOptions = {}
         if(req.Model.modelName === 'Category') {
             queryOptions.populate = 'parent'
-        } else if(req.Model.modelName === 'Song') {
+        } else if(req.Model.modelName === 'UpSong') {
             queryOptions.populate = 'upload'
         }
-        const items = await req.Model.find().setOptions(queryOptions).limit()
+        const items = await req.Model.find().setOptions(queryOptions).lean()
         res.send(items)
     })
 
@@ -39,6 +40,9 @@ module.exports = app => {
         const queryOptions = {}
         if(req.Model.modelName === 'Song') {
             queryOptions.populate = 'upload'
+        } else if(req.Model.modelName === 'UpSong') {
+            const model = await UpSong.findById(req.params.id).populate('upload').populate('categories').lean()
+            res.send(model)
         }
         const model = await req.Model.findById(req.params.id).setOptions(queryOptions)
         res.send(model)
