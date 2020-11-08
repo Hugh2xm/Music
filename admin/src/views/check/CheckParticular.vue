@@ -7,25 +7,12 @@
             <div class="text item" >
                 <el-form label-width="120px" @submit.native.prevent="save">
                     <el-row>
-                        <el-col :span="14">
-                            <el-form-item label="歌曲名">
-                                <el-input :disabled="true" v-model="model.name"></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="14" >
-                            <el-form-item label="歌曲类型">
-                                <el-input :disabled="true" v-model="this.categoryName"></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="14">
-                            <el-form-item label="上传人">
-                                <el-input :disabled="true" v-model="this.uploadName"></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="14">
-                            <el-form-item label="上传人">
-                                <el-input :disabled="true" v-model="this.uploadName"></el-input>
-                            </el-form-item>
+                        <el-col :span="22">
+                            <VueAudio :url="this.model.url"
+                                      :name="this.model.name"
+                                      :upload="this.uploadName"
+                                      :categories="this.categoryName">
+                            </VueAudio>
                         </el-col>
                         <el-col :offset="17" style="margin-top: 2rem">
                             <el-button native-type="submit">通过</el-button>
@@ -35,21 +22,26 @@
                     </el-row>
                 </el-form>
             </div>
+
         </el-card>
     </div>
 </template>
 
 <script>
+    import VueAudio from "./components/VueAudio";
     export default {
         name: "CheckParticular",
         props: {
             id: {},
         },
+        components: {
+          VueAudio
+        },
         data() {
           return {
               model: {},
               categoryName: '',
-              uploadName:''
+              uploadName:'',
           }
         },
         methods: {

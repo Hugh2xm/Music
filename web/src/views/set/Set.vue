@@ -64,7 +64,14 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="角色管理">角色管理</el-tab-pane>
+            <el-tab-pane label="上传审核结果">
+                <div class="bg-white pt-4 px-6">
+                    <div class="set-head">音乐上传</div>
+                    <div class="set-info pb-3" >
+
+                    </div>
+                </div>
+            </el-tab-pane>
             <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
         </el-tabs>
     </div>

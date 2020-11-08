@@ -14,6 +14,7 @@
     "inflection": "^1.12.0",
     "vue": "^2.6.10",
     "vue-aplayer": "^1.6.1",
+    "vue-audio-visual": "^2.2.0",
     "vue-router": "^3.0.3"
   },
   "devDependencies": {
