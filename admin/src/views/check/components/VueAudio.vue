@@ -20,20 +20,19 @@
                 ></av-waveform>
                 <p>{{ audio.currentTime | formatSecond}}/{{ audio.maxTime | formatSecond}}</p>
             </div>
-            <div style="letter-spacing: .2rem;padding: 2rem">
+            <div style="letter-spacing: .2rem;padding: 2rem;">
                 <el-row :gutter="20" style="margin-bottom:2rem;">
-                    <el-col :span="4"><div class="grid-content bg-purple">歌曲名称:</div></el-col>
+                    <el-col :offset="6" :span="4"><div class="grid-content bg-purple">歌曲名称:</div></el-col>
                     <el-col :span="8"><div class="grid-content bg-purple">{{name.slice(0,-4)}}</div></el-col>
                 </el-row>
                 <el-row :gutter="20" style="margin-bottom:2rem;">
-                    <el-col :span="4"><div class="grid-content bg-purple">歌曲类型:</div></el-col>
+                    <el-col :offset="6" :span="4"><div class="grid-content bg-purple">歌曲类型:</div></el-col>
                     <el-col :span="8"><div class="grid-content bg-purple">{{categories}}</div></el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col :span="4"><div class="grid-content bg-purple">上传人:</div></el-col>
+                    <el-col :offset="6" :span="4"><div class="grid-content bg-purple">上传人:</div></el-col>
                     <el-col :span="8"><div class="grid-content bg-purple">{{upload}}</div></el-col>
                 </el-row>
-
             </div>
         </div>
     </div>

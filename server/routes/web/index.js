@@ -318,6 +318,11 @@ module.exports = app => {
         const model = await UpSong.create(req.body)
         res.send(model)
     })
+    //查询UpSong数据
+    router.get('/UpSong',async  (req,res)=> {
+        const model = await UpSong.find()
+        res.send(model)
+    })
 
     //计算热门
     router.get('/hot',async (req,res)=> {

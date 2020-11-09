@@ -67,10 +67,6 @@
                 this.model.mask = 2
                 await this.$http.put(`rest/UpSong/${this.id}`, this.model)
                 this.$router.push('/check/list')
-                this.$message({
-                    type: 'danger',
-                    message: '不通过'
-                })
             }
         },
         created() {

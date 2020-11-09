@@ -67,8 +67,35 @@
             <el-tab-pane label="上传审核结果">
                 <div class="bg-white pt-4 px-6">
                     <div class="set-head">音乐上传</div>
-                    <div class="set-info pb-3" >
-
+                    <div class="pb-3" >
+                        <el-table
+                                :data="tableData"
+                                stripe
+                                style="width: 100%">
+                            <el-table-column
+                                    prop="date"
+                                    label="日期">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="name"
+                                    label="歌曲名称">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="mask"
+                                    label="结果">
+                                <template slot-scope="scope">
+                                    <el-tag type="info" close-transition v-if="scope.row.mask === 0">
+                                        等待处理
+                                    </el-tag>
+                                    <el-tag type="success" close-transition v-if="scope.row.mask === 1">
+                                        通过
+                                    </el-tag>
+                                    <el-tag type="danger" close-transition v-if="scope.row.mask === 2">
+                                        不通过
+                                    </el-tag>
+                                </template>
+                            </el-table-column>
+                        </el-table>
                     </div>
                 </div>
             </el-tab-pane>
@@ -124,9 +151,8 @@
                 },
                 categories: [],
                 options:[],
-                value: ''
-
-
+                value: '',
+                tableData: []
             }
         },
         methods: {
@@ -173,11 +199,17 @@
             },
             handleChange() {
                 this.model.categories = this.value[2]
+            },
+            //显示上传之后管理员处理的结果
+            async UploadStatic() {
+                const res = await this.$http.get('UpSong')
+                this.tableData = res.data
             }
         },
         created() {
             this.checkUserID()
             this.categoryLast()
+            this.UploadStatic()
         }
     }
 </script>

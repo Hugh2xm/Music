@@ -40,12 +40,16 @@ module.exports = app => {
         const queryOptions = {}
         if(req.Model.modelName === 'Song') {
             queryOptions.populate = 'upload'
+            const model = await req.Model.findById(req.params.id).setOptions(queryOptions)
+            res.send(model)
         } else if(req.Model.modelName === 'UpSong') {
             const model = await UpSong.findById(req.params.id).populate('upload').populate('categories').lean()
             res.send(model)
+        } else {
+            const model = await req.Model.findById(req.params.id).setOptions(queryOptions)
+            res.send(model)
         }
-        const model = await req.Model.findById(req.params.id).setOptions(queryOptions)
-        res.send(model)
+
     })
 
     //数据修改
@@ -117,7 +121,7 @@ module.exports = app => {
         res.send({token})
     })
 
-    //错误处理函数
+    // 错误处理函数
     app.use(async (err,req,res,next)=> {
         res.status(err.statusCode || 500).send({
             message: err.message
