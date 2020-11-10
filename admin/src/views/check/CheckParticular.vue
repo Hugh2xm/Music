@@ -66,6 +66,10 @@
             async noSave() {
                 this.model.mask = 2
                 await this.$http.put(`rest/UpSong/${this.id}`, this.model)
+                this.$message({
+                    type: 'warning',
+                    message: '不通过'
+                })
                 this.$router.push('/check/list')
             }
         },

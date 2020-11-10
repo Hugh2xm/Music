@@ -73,8 +73,11 @@
                                 stripe
                                 style="width: 100%">
                             <el-table-column
-                                    prop="date"
+                                    prop="createTime"
                                     label="日期">
+                                <template slot-scope="scope">
+                                    {{scope.row.createTime | date}}
+                                </template>
                             </el-table-column>
                             <el-table-column
                                     prop="name"
@@ -99,15 +102,20 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
         </el-tabs>
     </div>
 </template>
 
 <script>
+    import dayjs from 'dayjs'
     export default {
         inject: ['reload'],
         name: "Set",
+        filters: {
+          date(val) {
+              return dayjs(val).format('YYYY-MM-DD hh:mm')
+          }
+        },
         data() {
             //修改密码表单规则
             let validatePass = (rule, value, callback) => {

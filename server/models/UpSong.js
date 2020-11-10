@@ -8,7 +8,11 @@ const schema = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'User'
     },
-    mask: {type: Number}
+    mask: {type: Number},
+    createTime: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 module.exports = mongoose.model('UpSong',schema,'UpSong')

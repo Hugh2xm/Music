@@ -7,9 +7,12 @@
             <div class="text item">
                 <el-table :data="items">
                     <el-table-column
-                            prop="_id"
+                            prop="createTime"
                             sortable
-                            label="ID">
+                            label="时间">
+                        <template slot-scope="scope">
+                            {{scope.row.createTime | date}}
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="mask"
@@ -39,7 +42,7 @@
                     </el-table-column>
                     <el-table-column
                             label="操作">
-                        <template slot-scope="scope" v-if="scope.row.mask !== 1">
+                        <template slot-scope="scope" v-if="scope.row.mask === 0">
                             <el-button
                                     type="text"
                                     size="small"
@@ -57,8 +60,14 @@
 </template>
 
 <script>
+    import dayjs from 'dayjs'
     export default {
         name: "CheckList",
+        filters: {
+            date(val) {
+                return dayjs(val).format('YYYY-MM-DD hh:mm')
+            }
+        },
         data() {
           return {
               items: []
