@@ -1,9 +1,13 @@
 module.exports = app => {
+    const mongoose = require('mongoose')
     const express = require('express')
     const jwt = require('jsonwebtoken')
     const assert = require('http-assert')
     const AdminUser = require('../../models/AdminUser')
     const UpSong = require('../../models/UpSong')
+    const Category = require('../../models/Category')
+    const Song = require('../../models/Song')
+    let ObjectId = mongoose.Types.ObjectId;
     const fs = require('fs')
 
     const router = express.Router({
@@ -51,6 +55,126 @@ module.exports = app => {
         }
 
     })
+
+
+    //查询数据-数据可视化
+    app.get('/admin/api/rest/dataShow',async (req,res)=> {
+
+        const parent = await Category.findOne({
+            name: '音效'
+        })
+
+        const children = await Category.find({
+            parent: parent._id
+        })
+
+        let son = []
+        for (let i = 0;i<children.length;i++) {
+            let temp = await Category.find({
+                parent: children[i]._id
+            })
+            for (let j = 0; j < temp.length; j++) {
+                son.push(temp[j])
+            }
+        }
+
+        let listSon = []
+        for (let i = 0; i < son.length; i++) {
+            let temp = await Category.find({
+                parent: son[i]._id
+            })
+            for (let j = 0; j < temp.length; j++) {
+                listSon.push(temp[j])
+            }
+        }
+
+        let listHot = []
+
+        for (let i = 0; i < listSon.length; i++) {
+            // let temp =  await Category.find({
+            //     _id : listSon[i]._id
+            // }).populate({
+            //     path: 'newsList'
+            // }).lean()
+            const list = await Category.aggregate([
+                {
+                    $lookup: {
+                        from: 'Songs',
+                        localField: '_id',
+                        foreignField: 'categories',
+                        as: 'songList'
+                    }
+                },
+                // {
+                //     $lookup: {
+                //         from: 'categories',
+                //         localField: 'parent',
+                //         foreignField: '_id',
+                //         as: 'parent'
+                //     }
+                // },
+                {
+                    $match: {  "_id":new ObjectId(listSon[i]._id) }
+                }
+            ])
+            listHot.push(list[0])
+        }
+
+        listHot.map(item => {
+            let total = 0;
+            item.songList.map( item=> {
+                total+=item.download
+            })
+            item.numbers = total
+        })
+
+        let list = []
+        for (let i = 0; i < son.length; i++) {
+            let total = 0
+            let arr = []
+            for (let j = 0; j < listHot.length; j++) {
+                if(son[i]._id.toString() === listHot[j].parent.toString()) {
+                    total+=listHot[j].numbers
+                    arr.push({
+                        name: listHot[j].name,
+                        value: listHot[j].numbers
+                    })
+                }
+            }
+            list.push({
+                name: son[i].name,
+                parent: son[i].parent,
+                value: total,
+                children: arr
+            })
+        }
+
+        let endList = []
+        for (let i = 0; i < children.length; i++) {
+            let totals = 0
+            let arr = []
+            for (let j = 0; j < list.length; j++) {
+                if(children[i]._id.toString() === list[j].parent.toString()) {
+                    totals+=list[j].value
+                    arr.push(list[j])
+                }
+            }
+            endList.push({
+                name: children[i].name,
+                children: arr
+            })
+
+        }
+        endList.map(item=> {
+            // end.push(item.children[index])
+            item.children.map(temp=> {
+                delete temp.parent
+            })
+        })
+
+        res.send(endList)
+    })
+
 
     //数据修改
     router.put('/:id',async (req,res)=> {

@@ -1,25 +1,34 @@
 <template>
-    <el-table :data="tableData">
-        <el-table-column prop="date" label="日期" width="140">
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120">
-        </el-table-column>
-        <el-table-column prop="address" label="地址">
-        </el-table-column>
-    </el-table>
+    <div id="myChart" :style="{width: '800px', height: '800px'}"></div>
 </template>
 
 <script>
     export default {
         name: 'home',
         data() {
-            const item = {
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            };
             return {
-                tableData: Array(1).fill(item)
+                items: {}
+            }
+        },
+        mounted(){
+            this.DataDownload();
+        },
+        methods: {
+            drawLine() {
+                // 基于准备好的dom，初始化echarts实例
+                let myChart = this.$echarts.init(document.getElementById('myChart'))
+                // 绘制图表
+                myChart.setOption({
+                    series: {
+                        type: 'sunburst',
+                        data: this.items
+                    }
+                })
+            },
+            async DataDownload() {
+                const res = await this.$http.get('/rest/dataShow')
+                this.items = res.data
+                this.drawLine()
             }
         }
     };
