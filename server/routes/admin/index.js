@@ -91,11 +91,6 @@ module.exports = app => {
         let listHot = []
 
         for (let i = 0; i < listSon.length; i++) {
-            // let temp =  await Category.find({
-            //     _id : listSon[i]._id
-            // }).populate({
-            //     path: 'newsList'
-            // }).lean()
             const list = await Category.aggregate([
                 {
                     $lookup: {
@@ -105,14 +100,6 @@ module.exports = app => {
                         as: 'songList'
                     }
                 },
-                // {
-                //     $lookup: {
-                //         from: 'categories',
-                //         localField: 'parent',
-                //         foreignField: '_id',
-                //         as: 'parent'
-                //     }
-                // },
                 {
                     $match: {  "_id":new ObjectId(listSon[i]._id) }
                 }
@@ -126,7 +113,34 @@ module.exports = app => {
                 total+=item.download
             })
             item.numbers = total
+
+            //添加虚拟下载数字
+            if(item.numbers === 0) {
+                item.numbers = Math.floor(Math.random() * 100000)
+            }
         })
+
+        //随机生成颜色
+        // let getRandomColor = function(){
+        //     return  '#' + (function(color){
+        //         return (color +=  '0123456789abcdef'[Math.floor(Math.random()*16)])
+        //         && (color.length === 6) ?  color : arguments.callee(color);
+        //     })('');
+        // }
+        let colors = ['#da0d68', '#975e6d', '#e0719c', '#f99e1c', '#ef5a78', '#f7f1bd', '#da1d23', '#dd4c51', '#3e0317', '#e62969',
+            '#6569b0', '#ef2d36', '#c94a44', '#b53b54', '#a5446f', '#dd4c51', '#f2684b', '#e73451', '#e65656', '#f89a1c', '#aeb92c',
+            '#4eb849', '#f68a5c', '#baa635', '#f7a128', '#f26355', '#e2631e', '#fde404', '#7eb138', '#ebb40f', '#e1c315', '#9ea718',
+            '#94a76f', '#d0b24f', '#8eb646', '#faef07', '#c1ba07', '#b09733', '#8f1c53', '#b34039', '#ba9232', '#8b6439', '#187a2f',
+            '#a2b029', '#718933', '#3aa255', '#a2bb2b', '#62aa3c', '#03a653', '#038549', '#28b44b', '#a3a830', '#7ac141', '#5e9a80',
+            '#0aa3b5', '#9db2b7', '#8b8c90', '#beb276', '#744e03', '#a3a36f', '#c9b583', '#978847', '#9d977f', '#cc7b6a', '#db646a',
+            '#76c0cb', '#80a89d', '#7a9bae', '#039fb8', '#5e777b', '#120c0c', '#c94930', '#caa465', '#dfbd7e', '#be8663', '#b9a449',
+            '#899893', '#a1743b', '#894810', '#ddaf61', '#b7906f', '#eb9d5f', '#ad213e', '#794752', '#cc3d41', '#b14d57', '#c78936',
+            '#8c292c', '#e5762e', '#a16c5a', '#a87b64', '#c78869', '#d4ad12', '#9d5433', '#c89f83', '#bb764c', '#692a19', '#470604',
+            '#e65832', '#d45a59', '#310d0f', '#ae341f', '#d78823', '#da5c1f', '#f89a80', '#f37674', '#e75b68', '#d0545f']
+        let getRandomColor = function() {
+            let ran = Math.floor(Math.random()*colors.length)
+            return colors.splice(ran,1)
+        }
 
         let list = []
         for (let i = 0; i < son.length; i++) {
@@ -137,7 +151,10 @@ module.exports = app => {
                     total+=listHot[j].numbers
                     arr.push({
                         name: listHot[j].name,
-                        value: listHot[j].numbers
+                        value: listHot[j].numbers,
+                        itemStyle: {
+                            color: getRandomColor()
+                        },
                     })
                 }
             }
@@ -145,6 +162,9 @@ module.exports = app => {
                 name: son[i].name,
                 parent: son[i].parent,
                 value: total,
+                itemStyle: {
+                    color: getRandomColor()
+                },
                 children: arr
             })
         }
@@ -161,16 +181,22 @@ module.exports = app => {
             }
             endList.push({
                 name: children[i].name,
+                itemStyle: {
+                    color: getRandomColor()
+                },
                 children: arr
             })
 
         }
+
+        //删除parent属性
         endList.map(item=> {
-            // end.push(item.children[index])
             item.children.map(temp=> {
                 delete temp.parent
             })
         })
+
+
 
         res.send(endList)
     })
