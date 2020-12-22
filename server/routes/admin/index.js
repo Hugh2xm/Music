@@ -202,6 +202,14 @@ module.exports = app => {
     })
 
 
+    //管理员信息
+    app.get('/admin/api/users/profile',async(req,res)=> {
+        const token = String(req.headers.authorization || '').split(' ').pop()
+        const { id } = jwt.verify(token, req.app.get('secret'))
+        const item = await AdminUser.findById(id)
+        res.send(item)
+    })
+
     //数据修改
     router.put('/:id',async (req,res)=> {
         const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)

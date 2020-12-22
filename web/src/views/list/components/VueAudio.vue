@@ -24,7 +24,7 @@
                 <p class="fs-xs ml-5 text-grey">{{ audio.currentTime | formatSecond}}/{{ audio.maxTime | formatSecond}}</p>
             </div>
             <div class="d-flex ai-center flex-grow-1 text-grey fs-xs ml-5 mr-2">
-                <p>{{name.slice(0,-4)}}</p>
+                <p>{{name}}</p>
             </div>
             <div class="d-flex ai-center mr-5">
                 <el-button type="info" @click="downloadExcel" class="ml-5">下载<i class="el-icon-download el-icon--right"></i></el-button>

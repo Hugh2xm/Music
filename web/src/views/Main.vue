@@ -14,7 +14,7 @@
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <router-link tag="div" to="/login">
-                                        <el-dropdown-item icon="el-icon-place" >登录/注销</el-dropdown-item>
+                                        <el-dropdown-item icon="el-icon-place" @click="deleteToken">登录/注销</el-dropdown-item>
                                     </router-link>
                                     <router-link tag="div" to="/register">
                                         <el-dropdown-item icon="el-icon-place" >注册</el-dropdown-item>
@@ -189,6 +189,10 @@
                 let index = Math.floor((Math.random()*this.searchList.length));
                 this.searchTitle = this.searchList[index]
 
+            },
+            deleteToken() {
+                // console.log(localStorage.token)
+                localStorage.clear()
             },
 
             rightDrawDisplay()  {

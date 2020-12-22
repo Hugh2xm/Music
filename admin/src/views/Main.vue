@@ -57,12 +57,12 @@
                 <el-dropdown>
                     <i class="el-icon-setting" style="margin-right: 15px"></i>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>查看</el-dropdown-item>
-                        <el-dropdown-item>新增</el-dropdown-item>
-                        <el-dropdown-item>删除</el-dropdown-item>
+                        <router-link tag="div" to="/login">
+                            <el-dropdown-item @click="deleteToken">注销</el-dropdown-item>
+                        </router-link>
                     </el-dropdown-menu>
                 </el-dropdown>
-                <span>王小虎</span>
+                <span>{{model.username}}</span>
             </el-header>
 
             <el-main>
@@ -85,10 +85,13 @@
 </style>
 
 <script>
+    import http from "../http";
+
     export default {
         data() {
             return {
-
+                user: '',
+                model: {}
             }
         },
         methods: {
@@ -97,7 +100,17 @@
             },
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
-            }
+            },
+            async GetAdminName() {
+                let res = await this.$http.get(`users/profile`)
+                this.model = res.data
+            },
+            deleteToken() {
+                localStorage.clear()
+            },
+        },
+        created () {
+            this.GetAdminName()
         }
-    };
+    }
 </script>
