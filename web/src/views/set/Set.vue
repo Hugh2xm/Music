@@ -71,7 +71,8 @@
                         <el-table
                                 :data="tableData"
                                 stripe
-                                style="width: 100%">
+                                style="width: 100%"
+                                v-if="TShow">
                             <el-table-column
                                     prop="createTime"
                                     label="日期">
@@ -160,7 +161,9 @@
                 categories: [],
                 options:[],
                 value: '',
-                tableData: []
+                tableData: [],
+                TShow: 'true',
+                UId: '',
             }
         },
         methods: {
@@ -210,7 +213,8 @@
             },
             //显示上传之后管理员处理的结果
             async UploadStatic() {
-                const res = await this.$http.get('UpSong')
+                const URes = await this.$http.get(`users/profile`)
+                const res = await this.$http.get(`UpSong/${URes.data._id}`)
                 this.tableData = res.data
             }
         },

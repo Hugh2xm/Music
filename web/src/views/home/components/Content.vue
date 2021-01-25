@@ -22,6 +22,27 @@
             </el-container>
         </div>
         <div class="box">
+            <el-container class="categories">
+                <el-header>
+                    <h2 class="mt-4 text-center text" style="">冷 门</h2>
+                </el-header>
+                <el-main>
+                    <div>
+                        <div class="d-flex jc-between">
+                            <div class="bg-black"
+                                 v-for="(item,index) in hotList" :key="index"
+                                 style="width: 20%;position: relative;overflow: hidden">
+                                <router-link :to="`/list/${item._id}`" class="hot-image py-7" v-bind:style="{backgroundImage:'url(' + icon.url + ')'}"></router-link>
+                                <div class="hot-body">
+                                    <p>{{item.parent[0].name}}·{{item.name}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </el-main>
+            </el-container>
+        </div>
+        <div class="box">
             <el-container class="categories px-7">
                 <el-header>
                     <h2 class="mt-4 text-center text">分 类</h2>
@@ -37,10 +58,16 @@
                 </el-main>
             </el-container>
         </div>
+        <div class="box">
+            <el-container class="categories">
+                <div id="myChart" :style="{width: '100%', height: '500px'}">11</div>
+            </el-container>
+        </div>
     </div>
 </template>
 
 <script>
+    import * as echarts from "echarts";
     export default {
         name: "Content",
         data () {
@@ -62,12 +89,61 @@
             async fetchHostList() {
                 const res = await this.$http.get('hot')
                 this.hotList = res.data
+            },
+            drawLine() {
+                let chartDom = document.getElementById('myChart');
+                let myChart = echarts.init(chartDom);
+                let option;
+
+                let xAxisData = [];
+                let data1 = [];
+                let data=[10,20,30,40,50,100,140,2,5]
+                for (let i = 0; i < data.length; i++) {
+                    xAxisData.push('类目' + i);
+                    data1.push(data[i]);
+                }
+                option ={
+                    title: {
+                        text: '柱状图动画延迟'
+                    },
+                    legend: {
+                        data: ['bar']
+                    },
+                    tooltip: {},
+                    xAxis: {
+                        data: xAxisData,
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                    yAxis: {
+                    },
+                    series: [{
+                        name: 'bar',
+                        type: 'bar',
+                        data: data1,
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        animationDelay: function (idx) {
+                            return idx * 10;
+                        }
+                    }],
+                    animationEasing: 'elasticOut',
+                    animationDelayUpdate: function (idx) {
+                        return idx * 5;
+                    }
+                };
+                option && myChart.setOption(option);
             }
+        },
+        mounted(){
+            this.drawLine();
         },
         created() {
             this.fetchCategories()
             this.fetchHostList()
-        }
+        },
     }
 </script>
 

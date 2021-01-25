@@ -319,8 +319,11 @@ module.exports = app => {
         res.send(model)
     })
     //查询UpSong数据
-    router.get('/UpSong',async  (req,res)=> {
-        const model = await UpSong.find()
+    router.get('/UpSong/:id',async  (req,res)=> {
+        // const model = await UpSong.findById(req.params.id)
+        const model = await UpSong.where({
+            upload: req.params.id
+        }).find()
         res.send(model)
     })
 

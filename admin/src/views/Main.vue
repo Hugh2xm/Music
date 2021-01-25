@@ -11,9 +11,9 @@
                         <el-menu-item index="/categories/list">分类列表</el-menu-item>
                     </el-submenu>
                     <el-submenu index="2-2">
-                        <template slot="title">广告位</template>
-                        <el-menu-item index="/ads/create">新建广告位</el-menu-item>
-                        <el-menu-item index="/ads/list">广告位列表</el-menu-item>
+                        <template slot="title">轮播图</template>
+                        <el-menu-item index="/ads/create">新建轮播图位</el-menu-item>
+                        <el-menu-item index="/ads/list">轮播图位位列表</el-menu-item>
                     </el-submenu>
                     <el-submenu index="2-3">
                         <template slot="title">管理员</template>
@@ -32,19 +32,9 @@
                         <template slot="title">歌曲</template>
                         <el-menu-item index="/songs/create">新建歌曲</el-menu-item>
                         <el-menu-item index="/songs/list">歌曲列表</el-menu-item>
-                        <el-menu-item index="/songs/upload">上传</el-menu-item>
+<!--                        <el-menu-item index="/songs/upload">上传</el-menu-item>-->
                     </el-submenu>
                     <el-submenu index="3-2">
-                        <template slot="title">合辑</template>
-                        <el-menu-item index="/collections/create">新建合辑</el-menu-item>
-                        <el-menu-item index="/collections/list">合辑列表</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="3-3">
-                        <template slot="title">评论</template>
-                        <el-menu-item index="/comments/create">新建评论</el-menu-item>
-                        <el-menu-item index="/comments/list">评论列表</el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="3-4">
                         <template slot="title">用户上传管理</template>
                         <el-menu-item index="/check/list">上传列表</el-menu-item>
                     </el-submenu>
